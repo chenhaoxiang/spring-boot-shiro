@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -22,11 +24,25 @@ import java.util.Properties;
  */
 @Configuration
 public class ShiroConfig {
+    /**
+     * 自定义身份认证
+     * 必须写这个类，并加上 @Bean 注解，目的是注入 CustomRealm，
+     * 否则会影响 CustomRealm类 中其他类的依赖注入
+     *
+     * @return
+     */
     @Bean
     public CustomRealm customRealm() {
         return new CustomRealm();
     }
 
+
+    /**
+     * 注入 securityManager
+     * DefaultWebSecurityManager
+     * @param customRealm
+     * @return
+     */
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(CustomRealm customRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
@@ -63,4 +79,44 @@ public class ShiroConfig {
         simpleMappingExceptionResolver.setExceptionMappings(mappings);
         return simpleMappingExceptionResolver;
     }
+
+
+    /**
+     * 不使用注解的拦截器写法
+     *
+     * @param defaultWebSecurityManager
+     * @return
+     */
+//    @Bean
+    public ShiroFilterFactoryBean shirFilter(DefaultWebSecurityManager defaultWebSecurityManager) {
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        // 必须设置 SecurityManager
+        shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager);
+        // setLoginUrl 如果不设置值，默认会自动寻找Web工程根目录下的"/login.jsp"页面 或 "/login" 映射
+        shiroFilterFactoryBean.setLoginUrl("/login");
+        // 设置无权限时跳转的 url;
+        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        // 登录成功后要跳转的链接
+        shiroFilterFactoryBean.setSuccessUrl("/index");
+
+        // 设置拦截器
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        //游客，开发权限
+        filterChainDefinitionMap.put("/guest/**", "anon");
+        //用户，需要角色权限 “user”
+        filterChainDefinitionMap.put("/user/**", "roles[user]");
+        //管理员，需要角色权限 “admin”
+        filterChainDefinitionMap.put("/admin/**", "roles[admin]");
+        //开放登陆接口
+        filterChainDefinitionMap.put("/login", "anon");
+        //其余接口一律拦截
+        //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截
+//        过滤链定义，从上向下顺序执行，一般将/**放在最为下边
+        filterChainDefinitionMap.put("/**", "authc");
+
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        System.out.println("Shiro拦截器工厂类注入成功");
+        return shiroFilterFactoryBean;
+    }
+
 }
