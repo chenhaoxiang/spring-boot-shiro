@@ -10,9 +10,8 @@ import com.huijava.helloworld.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
 /**
+ * 通过 @RequiresPermissions 等注解设置访问资源所需的权限 - 这样注解配置不灵活
  * @author chenhx
  * @version UserServiceImpl.java, v 0.1 2018-08-02 下午 5:24
  */
@@ -20,21 +19,6 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
-
-    @Override
-    public Set<String> selectRolesByUsername(String username) {
-        return userDao.selectRolesByUsername(username);
-    }
-
-    @Override
-    public Set<String> selectPermissionsByRole(String role) {
-        return userDao.selectPermissionsByRole(role);
-    }
-
-    @Override
-    public String selectPasswordByUsername(String username) {
-        return userDao.selectPasswordByUsername(username);
-    }
 
     @Override
     public Integer addUser(Users users) {
@@ -56,9 +40,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users selectUser(String username) {
+        System.out.println("selectUser...");
         Users users = new Users();
         users.setUsername(username);
         users.setPassword(userDao.selectPasswordByUsername(username));
+        System.out.println("查询出来的用户为:" + users);
         return users;
     }
 }

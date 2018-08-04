@@ -6,8 +6,6 @@ package com.huijava.helloworld.service;
 
 import com.huijava.helloworld.entity.Users;
 
-import java.util.Set;
-
 /**
  * 用户Service层
  *
@@ -15,30 +13,6 @@ import java.util.Set;
  * @version UserService.java, v 0.1 2018-08-02 下午 5:12
  */
 public interface UserService {
-    /**
-     * 通过用户名获取用户的所有角色名
-     *
-     * @param username
-     * @return
-     */
-    Set<String> selectRolesByUsername(String username);
-
-    /**
-     * 通过角色名获取权限
-     *
-     * @param role
-     * @return
-     */
-    Set<String> selectPermissionsByRole(String role);
-
-    /**
-     * 用户进行登录
-     *
-     * @param username
-     * @return
-     */
-    String selectPasswordByUsername(String username);
-
     /**
      * 增加用户
      *

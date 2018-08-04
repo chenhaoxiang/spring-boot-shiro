@@ -24,6 +24,13 @@
         <java.version>1.8</java.version>
     </properties>
 
+    <dependencies>
+        <!--如果没有在配置文件中配置路径，则需要导入下面的thymeleaf模板，才能在controller中映射到文件-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
