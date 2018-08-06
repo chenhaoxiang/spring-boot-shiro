@@ -83,7 +83,7 @@ public class ShiroConfig {
 
     /**
      * 不使用注解的拦截器写法
-     *
+     * 尚未进行测试，使用请自行测试
      * @param defaultWebSecurityManager
      * @return
      */
