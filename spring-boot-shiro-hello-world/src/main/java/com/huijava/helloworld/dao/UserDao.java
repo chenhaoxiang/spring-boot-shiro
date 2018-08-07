@@ -49,10 +49,7 @@ public class UserDao {
         Set<String> permissions = new HashSet<>();
         switch (role) {
             case "admin":
-                permissions.add("user:insert");
-                permissions.add("user:delete");
-                permissions.add("user:update");
-                permissions.add("user:select");
+                permissions.add("user:*");
                 break;
             case "user":
                 permissions.add("user:insert");
