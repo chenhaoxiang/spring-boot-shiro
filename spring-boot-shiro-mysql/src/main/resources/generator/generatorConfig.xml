@@ -197,7 +197,7 @@
 
             注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
          -->
-        <table tableName="t_permission" mapperName="Permission"
+        <table tableName="t_permission"
                enableCountByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <!--
@@ -213,17 +213,17 @@
             -->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
         </table>
-        <table tableName="t_role" mapperName="Role"
+        <table tableName="t_role"
                enableCountByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
         </table>
-        <table tableName="t_user" mapperName="User"
+        <table tableName="t_user"
                enableCountByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
         </table>
-        <table tableName="t_r_permission_role" mapperName="RPermissionRole"
+        <table tableName="t_r_permission_role"
                enableCountByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
