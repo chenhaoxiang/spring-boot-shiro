@@ -25,7 +25,7 @@
         <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
 
         <!--生成拓展类-->
-        <!--<plugin type="xyz.mrwood.mybatis.generator.plugin.plugins.ExtPlugin" />-->
+        <plugin type="xyz.mrwood.mybatis.generator.plugin.plugins.ExtPlugin"/>
         <!--为生成的Java model添加序列化接口，并生成serialVersionUID字段-->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <!--生成tostring方法-->
@@ -61,7 +61,6 @@
             设置生成类的时候可以获取表的注释信息
             -->
             <property name="useInformationSchema" value="true"></property>
-
         </jdbcConnection>
 
 
@@ -198,7 +197,7 @@
 
             注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
          -->
-        <table tableName="t_permission"
+        <table tableName="t_permission" mapperName="Permission"
                enableCountByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <!--
@@ -214,12 +213,17 @@
             -->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
         </table>
-        <table tableName="t_role"
+        <table tableName="t_role" mapperName="Role"
                enableCountByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
         </table>
-        <table tableName="t_user"
+        <table tableName="t_user" mapperName="User"
+               enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+        <table tableName="t_r_permission_role" mapperName="RPermissionRole"
                enableCountByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>

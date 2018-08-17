@@ -4,7 +4,6 @@
  */
 package com.huijava.controller;
 
-import com.huijava.entity.TUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -47,11 +46,11 @@ public class IndexController {
     }
 
     /**
-     * 注册
+     * TODO 注册
      */
     @PostMapping("/register")
-    public void register(TUser user) {
-        System.out.println("注册，" + user);
+    public void register() {
+        System.out.println("注册，");
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
     }

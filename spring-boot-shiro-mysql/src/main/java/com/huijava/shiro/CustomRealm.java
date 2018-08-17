@@ -4,20 +4,16 @@
  */
 package com.huijava.shiro;
 
-import com.huijava.entity.TUser;
 import com.huijava.server.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * 自定义Realm
@@ -42,10 +38,10 @@ public class CustomRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String username = (String) super.getAvailablePrincipal(principalCollection);
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        String role = this.userService.selectRoleNameByUserName(username);
-        authorizationInfo.addRole(role);
-        List<String> permissions = this.userService.selectPermissionsByRoleName(role);
-        authorizationInfo.addStringPermissions(permissions);
+//        String role = this.userService.selectRoleNameByUserName(username);
+//        authorizationInfo.addRole(role);
+//        List<String> permissions = this.userService.selectPermissionsByRoleName(role);
+//        authorizationInfo.addStringPermissions(permissions);
         return authorizationInfo;
     }
 
@@ -63,12 +59,13 @@ public class CustomRealm extends AuthorizingRealm {
         String username = token.getUsername();
         //通过username从数据库中查找 User对象
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        TUser user = this.userService.selectUserByUserName(username);
-        System.out.println("====>user=" + user);
-        if (user == null) {
-            return null;
-        }
-        return new SimpleAuthenticationInfo(username, user.getPassword(), getName());
+//        TUser user = this.userService.selectUserByUserName(username);
+//        System.out.println("====>user=" + user);
+//        if (user == null) {
+//            return null;
+//        }
+//        return new SimpleAuthenticationInfo(username, user.getPassword(), getName());
+        return null;
     }
 
 
