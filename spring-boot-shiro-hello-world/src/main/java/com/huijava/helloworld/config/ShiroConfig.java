@@ -67,7 +67,8 @@ public class ShiroConfig {
     /**
      * 授权未通过时(403)错误处理,没有这个不会跳转到403页面
      * 没有授权的处理
-     *
+     * 配合注解的使用，使用代码配置ShiroFilter的，直接是setUnauthorizedUrl
+     * 使用该方法可以配置多个异常匹配
      * @return
      */
     @Bean
@@ -83,11 +84,11 @@ public class ShiroConfig {
 
     /**
      * 不使用注解的拦截器写法
-     * 尚未进行测试，使用请自行测试
+     * 没有权限之后的跳转必须是登录以后才能识别的
      * @param defaultWebSecurityManager
      * @return
      */
-//    @Bean
+    @Bean
     public ShiroFilterFactoryBean shirFilter(DefaultWebSecurityManager defaultWebSecurityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         // 必须设置 SecurityManager
@@ -101,14 +102,17 @@ public class ShiroConfig {
 
         // 设置拦截器
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        //游客，开放权限
-        filterChainDefinitionMap.put("/guest/**", "anon");
-        //用户，需要角色权限 “user”
-        filterChainDefinitionMap.put("/user/**", "roles[user]");
-        //管理员，需要角色权限 “admin”
-        filterChainDefinitionMap.put("/admin/**", "roles[admin]");
-        //开放登陆接口
+        //开放接口
         filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/index", "anon");
+        filterChainDefinitionMap.put("/", "anon");
+
+        //用户，需要角色权限 “user”
+        filterChainDefinitionMap.put("/insert", "perms[user:insert]");
+        filterChainDefinitionMap.put("/update", "perms[user:update]");
+        filterChainDefinitionMap.put("/delete", "perms[user:delete]");
+        filterChainDefinitionMap.put("/select", "perms[user:select]");
         //其余接口一律拦截
         //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截
 //        过滤链定义，从上向下顺序执行，一般将/**放在最为下边

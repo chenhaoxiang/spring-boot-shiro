@@ -10,7 +10,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +54,7 @@ public class UserController {
 
 
     @GetMapping("/insert")
-    @RequiresPermissions("user:insert")
+//    @RequiresPermissions("user:insert")
     public Integer insert() {
         System.out.println("insert...");
         Users users = new Users();
@@ -65,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/update")
-    @RequiresPermissions("user:update")
+//    @RequiresPermissions("user:update")
     public Integer update() {
         System.out.println("update...");
         Users users = new Users();
@@ -75,7 +74,7 @@ public class UserController {
     }
 
     @GetMapping("/delete")
-    @RequiresPermissions("user:delete")
+//    @RequiresPermissions("user:delete")
     public Integer delete() {
         System.out.println("delete...");
         Users users = new Users();
@@ -85,7 +84,7 @@ public class UserController {
     }
 
     @GetMapping("/select")
-    @RequiresPermissions("user:select")
+//    @RequiresPermissions("user:select")
     public Users select(String username) {
         System.out.println("select...");
         return userService.selectUser(username);

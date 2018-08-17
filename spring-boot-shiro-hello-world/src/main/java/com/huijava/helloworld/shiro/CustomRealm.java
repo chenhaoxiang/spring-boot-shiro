@@ -52,7 +52,6 @@ public class CustomRealm extends AuthorizingRealm {
 
     /**
      * 认证
-     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -62,12 +61,15 @@ public class CustomRealm extends AuthorizingRealm {
         System.out.println("MyShiroRealm.doGetAuthenticationInfo()");
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String username = token.getUsername();
+        if (username == null) {
+            throw new org.apache.shiro.authz.AuthorizationException("认证失败");
+        }
         //通过username从数据库中查找 User对象
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
         String password = this.userDao.selectPasswordByUsername(username);
         System.out.println("====>password=" + password);
         if (password == null) {
-            return null;
+            throw new org.apache.shiro.authz.AuthorizationException("认证失败");
         }
         return new SimpleAuthenticationInfo(username, password, getName());
     }
