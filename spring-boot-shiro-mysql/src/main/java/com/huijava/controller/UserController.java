@@ -4,7 +4,7 @@
  */
 package com.huijava.controller;
 
-import com.huijava.server.UserService;
+import com.huijava.server.ShiroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private ShiroService shiroService;
 
     @GetMapping("/insert")
     public String insert() {
@@ -46,12 +46,14 @@ public class UserController {
     }
 
     /**
+     * 更新权限
      * @return
      */
     @GetMapping("/updatePermission")
     @ResponseBody
     public String updatePermission() {
         System.out.println("select...");
-        return "success";
+        shiroService.updatePermission();
+        return "updatePermission";
     }
 }

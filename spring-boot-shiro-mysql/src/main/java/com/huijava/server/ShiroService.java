@@ -7,7 +7,7 @@ package com.huijava.server;
 import java.util.Map;
 
 /**
- * 动态更新权限
+ * 动态更新Shiro的权限拦截器
  *
  * @author chenhx
  * @version ShiroService.java, v 0.1 2018-08-20 上午 10:29

@@ -39,6 +39,13 @@ public class IndexController {
         return new ModelAndView("403");
     }
 
+    /**
+     * IncorrectCredentialsException 密码错误的异常
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     @GetMapping("/login")
     public String login(String username, String password) {
         System.out.println("登录...");

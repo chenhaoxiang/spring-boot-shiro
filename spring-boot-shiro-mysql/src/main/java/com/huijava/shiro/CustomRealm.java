@@ -34,7 +34,7 @@ public class CustomRealm extends AuthorizingRealm {
     /**
      * 授权
      * SimpleAuthorizationInfo进行角色的添加和权限的添加。
-     *
+     * 每次请求都会执行，可以使用redis对shiro的用户信息进行缓存，不用每次都去执行
      * @param principalCollection
      * @return
      */

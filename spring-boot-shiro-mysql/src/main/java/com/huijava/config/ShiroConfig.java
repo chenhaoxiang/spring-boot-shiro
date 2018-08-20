@@ -89,15 +89,10 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         List<String> anonList = shiroFilterConfig.getAnon();
         for (String anon : anonList) {
+            //开放接口
             filterChainDefinitionMap.put(anon,
                     "anon");
         }
-        //开放接口
-//        filterChainDefinitionMap.put("/login", "anon");
-//        filterChainDefinitionMap.put("/static/**", "anon");
-//        filterChainDefinitionMap.put("/index", "anon");
-//        filterChainDefinitionMap.put("/", "anon");
-
         //从数据库获取
         List<TPermission> tPermissionList = userService.selectAll();
         for (TPermission tPermission : tPermissionList) {
