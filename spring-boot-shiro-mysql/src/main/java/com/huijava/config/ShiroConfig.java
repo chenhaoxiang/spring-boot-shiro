@@ -26,7 +26,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
     /**
-     * 自定义身份认证
+     * 自定义的认证类，继承子AuthorizingRealm，负责用户的认证和权限处理
      * 必须写这个类，并加上 @Bean 注解，目的是注入 CustomRealm，
      * 否则会影响 CustomRealm类 中其他类的依赖注入
      *
@@ -39,34 +39,26 @@ public class ShiroConfig {
 
 
     /**
-     * 注入 securityManager
+     * 安全管理器 将realm加入securityManager
      * DefaultWebSecurityManager
-     *
      * @param customRealm
      * @return
      */
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(CustomRealm customRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        //设置realm
         securityManager.setRealm(customRealm);
         return securityManager;
     }
 
-    /**
-     * LifecycleBeanPostProcessor将Initializable和Destroyable的实现类统一在其内部自动分别调用了
-     * Initializable.init()和Destroyable.destroy()方法，从而达到管理shiro bean生命周期的目的。
-     *
-     * @return
-     */
-    @Bean
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
-    }
-
 
     /**
-     * 动态设置权限拦截器
-     *
+     * shiro filter 工厂类
+     * 1.定义ShiroFilterFactoryBean
+     * 2.设置SecurityManager
+     * 3.配置拦截器
+     * 4.返回定义ShiroFilterFactoryBean
      * @param securityManager
      * @param userService
      * @return
@@ -79,11 +71,23 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        if (shiroFilterConfig.getLoginUrl() != null && shiroFilterConfig.getLoginUrl().length() > 0) {
+            shiroFilterFactoryBean.setLoginUrl(shiroFilterConfig.getLoginUrl());
+        } else {
+            shiroFilterFactoryBean.setLoginUrl("/login");
+        }
         // 登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl("/index");
+        if (shiroFilterConfig.getSuccessUrl() != null && shiroFilterConfig.getSuccessUrl().length() > 0) {
+            shiroFilterFactoryBean.setSuccessUrl(shiroFilterConfig.getSuccessUrl());
+        } else {
+            shiroFilterFactoryBean.setSuccessUrl("/index");
+        }
         // 未授权界面;
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        if (shiroFilterConfig.getUnauthorizedUrl() != null && shiroFilterConfig.getUnauthorizedUrl().length() > 0) {
+            shiroFilterFactoryBean.setSuccessUrl(shiroFilterConfig.getUnauthorizedUrl());
+        } else {
+            shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
+        }
 
         // 权限控制map.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
@@ -111,6 +115,18 @@ public class ShiroConfig {
 
         System.out.println("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
+    }
+
+
+    /**
+     * LifecycleBeanPostProcessor将Initializable和Destroyable的实现类统一在其内部自动分别调用了
+     * Initializable.init()和Destroyable.destroy()方法，从而达到管理shiro bean生命周期的目的。
+     *
+     * @return
+     */
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
     }
 
 }

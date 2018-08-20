@@ -29,6 +29,75 @@ public class ShiroFilterConfig {
      */
     @Value("${shiro.filter.allUrlAuthentication}")
     private boolean allUrlAuthentication;
+    /**
+     * 登录页面
+     */
+    @Value("${shiro.filter.loginUrl}")
+    private String loginUrl;
+    /**
+     * 登录成功后跳转页面
+     */
+    @Value("${shiro.filter.successUrl}")
+    private String successUrl;
+    /**
+     * 无权限跳转的页面
+     */
+    @Value("${shiro.filter.unauthorizedUrl}")
+    private String unauthorizedUrl;
+
+    /**
+     * Getter method for property <tt>loginUrl</tt>.
+     *
+     * @return property value of loginUrl
+     */
+    public String getLoginUrl() {
+        return loginUrl;
+    }
+
+    /**
+     * Setter method for property <tt>loginUrl</tt>.
+     *
+     * @param loginUrl value to be assigned to property loginUrl
+     */
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
+    }
+
+    /**
+     * Getter method for property <tt>successUrl</tt>.
+     *
+     * @return property value of successUrl
+     */
+    public String getSuccessUrl() {
+        return successUrl;
+    }
+
+    /**
+     * Setter method for property <tt>successUrl</tt>.
+     *
+     * @param successUrl value to be assigned to property successUrl
+     */
+    public void setSuccessUrl(String successUrl) {
+        this.successUrl = successUrl;
+    }
+
+    /**
+     * Getter method for property <tt>unauthorizedUrl</tt>.
+     *
+     * @return property value of unauthorizedUrl
+     */
+    public String getUnauthorizedUrl() {
+        return unauthorizedUrl;
+    }
+
+    /**
+     * Setter method for property <tt>unauthorizedUrl</tt>.
+     *
+     * @param unauthorizedUrl value to be assigned to property unauthorizedUrl
+     */
+    public void setUnauthorizedUrl(String unauthorizedUrl) {
+        this.unauthorizedUrl = unauthorizedUrl;
+    }
 
     /**
      * Getter method for property <tt>anon</tt>.

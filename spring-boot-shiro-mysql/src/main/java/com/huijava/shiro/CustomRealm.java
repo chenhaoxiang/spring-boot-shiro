@@ -51,7 +51,6 @@ public class CustomRealm extends AuthorizingRealm {
 
     /**
      * 认证
-     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -66,6 +65,7 @@ public class CustomRealm extends AuthorizingRealm {
         TUser user = this.userService.selectUserByUserName(username);
         System.out.println("====>user=" + user);
         if (user == null) {
+            // 返回null，会使任何用户访问被拦截的请求时，都会自动跳转到unauthorizedUrl指定的地址
             return null;
         }
         return new SimpleAuthenticationInfo(username, user.getPassword(), getName());
