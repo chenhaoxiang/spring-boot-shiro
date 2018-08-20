@@ -7,6 +7,7 @@ package com.huijava.server.impl;
 import com.huijava.dao.PermissionExt;
 import com.huijava.dao.RPermissionRoleExt;
 import com.huijava.dao.UserExt;
+import com.huijava.entity.TPermission;
 import com.huijava.entity.TUser;
 import com.huijava.server.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,12 @@ public class UserServiceImpl implements UserService {
     private PermissionExt permissionExt;
     @Autowired
     private RPermissionRoleExt rPermissionRoleExt;
+
+
+    @Override
+    public List<TPermission> selectAll() {
+        return permissionExt.selectAll();
+    }
 
     @Override
     public TUser selectUserByUserName(String username) {

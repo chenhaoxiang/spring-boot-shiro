@@ -25,6 +25,7 @@
     </properties>
 
     <dependencies>
+        <!-- Spring Boot Freemarker 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>

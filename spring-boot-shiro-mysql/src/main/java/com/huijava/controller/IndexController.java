@@ -5,13 +5,13 @@
 package com.huijava.controller;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author chenhx
@@ -19,23 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class IndexController {
+    @GetMapping("/test")
+    @ResponseBody
+    public String test() {
+        System.out.println("test");
+        return "test";
+    }
+
+    @GetMapping({"/index", ""})
+    @ResponseBody
+    public String index() {
+        System.out.println("index");
+        return "index";
+    }
+
+    @GetMapping("/403")
+    public ModelAndView notAuthorized() {
+        System.out.println("403");
+        return new ModelAndView("403");
+    }
 
     @GetMapping("/login")
-    public void login(String username, String password) {
+    public String login(String username, String password) {
         System.out.println("登录...");
         //有加密的话，在这里将密码进行加密再传入
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         token.setRememberMe(true);
         Subject currentUser = SecurityUtils.getSubject();
-        try {
-            currentUser.login(token);
-        } catch (UnknownAccountException e) {
-            System.out.println("UnknownAccountException -- > 账号不存在：");
-            e.printStackTrace();
-        } catch (IncorrectCredentialsException e) {
-            System.out.println("IncorrectCredentialsException -- > 密码不正确：");
-            e.printStackTrace();
-        }
+        currentUser.login(token);
+        return "success";
     }
 
     @GetMapping("/logout")

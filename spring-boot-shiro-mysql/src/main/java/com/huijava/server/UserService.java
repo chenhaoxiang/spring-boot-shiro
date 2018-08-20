@@ -5,6 +5,7 @@
 package com.huijava.server;
 
 
+import com.huijava.entity.TPermission;
 import com.huijava.entity.TUser;
 
 import java.util.List;
@@ -14,6 +15,12 @@ import java.util.List;
  * @version UserService.java, v 0.1 2018-08-07 上午 10:48
  */
 public interface UserService {
+    /**
+     * 查询所有权限
+     *
+     * @return
+     */
+    List<TPermission> selectAll();
     /**
      * 通过用户名查询用户
      *
@@ -45,4 +52,5 @@ public interface UserService {
      * @return
      */
     int userRegister(TUser user);
+
 }
