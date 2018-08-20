@@ -10,6 +10,7 @@ import com.huijava.dao.UserExt;
 import com.huijava.entity.TPermission;
 import com.huijava.entity.TUser;
 import com.huijava.server.UserService;
+import com.huijava.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int userRegister(TUser user) {
-        return 0;
+        //设置盐和密码
+        PasswordUtils.encryptPassword(user);
+        return userExt.insertSelective(user);
     }
 }

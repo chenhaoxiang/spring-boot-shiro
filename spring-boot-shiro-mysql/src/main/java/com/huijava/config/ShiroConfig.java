@@ -7,6 +7,8 @@ package com.huijava.config;
 import com.huijava.entity.TPermission;
 import com.huijava.server.UserService;
 import com.huijava.shiro.CustomRealm;
+import com.huijava.utils.PasswordUtils;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -25,6 +27,29 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
+
+    /**
+     * 这里需要设置成与PasswordEncrypter类相同的加密规则
+     * <p>
+     * 在doGetAuthenticationInfo认证登陆返回SimpleAuthenticationInfo时会使用hashedCredentialsMatcher
+     * 把用户填入密码加密后生成散列码与数据库对应的散列码进行对比
+     * <p>
+     * HashedCredentialsMatcher会自动根据AuthenticationInfo的类型是否是SaltedAuthenticationInfo来获取credentialsSalt盐
+     *
+     * @return
+     */
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        // 散列算法, 与注册时使用的散列算法相同
+        hashedCredentialsMatcher.setHashAlgorithmName(PasswordUtils.getAlgorithmName());
+        // 散列次数, 与注册时使用的散列册数相同
+        hashedCredentialsMatcher.setHashIterations(PasswordUtils.getHashIterations());
+        // 生成16进制, 与注册时的生成格式相同
+        hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);
+        return hashedCredentialsMatcher;
+    }
+
     /**
      * 自定义的认证类，继承子AuthorizingRealm，负责用户的认证和权限处理
      * 必须写这个类，并加上 @Bean 注解，目的是注入 CustomRealm，
@@ -33,8 +58,11 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    public CustomRealm customRealm() {
-        return new CustomRealm();
+    public CustomRealm customRealm(HashedCredentialsMatcher hashedCredentialsMatcher) {
+        CustomRealm customRealm = new CustomRealm();
+        // 设置加密算法
+        customRealm.setCredentialsMatcher(hashedCredentialsMatcher);
+        return customRealm;
     }
 
 

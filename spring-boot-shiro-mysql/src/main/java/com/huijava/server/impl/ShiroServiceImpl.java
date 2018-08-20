@@ -76,6 +76,7 @@ public class ShiroServiceImpl implements ShiroService {
         synchronized (shiroFilterFactoryBean) {
             AbstractShiroFilter shiroFilter = null;
             try {
+                //应用程序的Shiro Filter实例，用于过滤传入的Web请求
                 shiroFilter = (AbstractShiroFilter) shiroFilterFactoryBean
                         .getObject();
             } catch (Exception e) {

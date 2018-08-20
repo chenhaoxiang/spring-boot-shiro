@@ -1,5 +1,6 @@
 package com.huijava.server.impl;
 
+import com.huijava.entity.TUser;
 import com.huijava.server.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -30,7 +31,15 @@ public class UserServiceImplTest {
     public void selectPermissionsByRoleName() {
     }
 
+    /**
+     * 用户注册
+     */
     @Test
     public void userRegister() {
+        TUser user = new TUser();
+        user.setUsername("chen");
+        user.setPassword("1234");
+        user.setRoleId(1);
+        System.out.println("===============" + userService.userRegister(user));
     }
 }

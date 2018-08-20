@@ -15,6 +15,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -65,10 +66,15 @@ public class CustomRealm extends AuthorizingRealm {
         TUser user = this.userService.selectUserByUserName(username);
         System.out.println("====>user=" + user);
         if (user == null) {
+            //throw new UnknownAccountException();
             // 返回null，会使任何用户访问被拦截的请求时，都会自动跳转到unauthorizedUrl指定的地址
             return null;
         }
-        return new SimpleAuthenticationInfo(username, user.getPassword(), getName());
+        // 未进行加密
+//        return new SimpleAuthenticationInfo(username, user.getPassword(), getName());
+        // 进行加密后的使用
+        // Shiro会默认会使用HashedCredentialsMatcher中的方式（盐值已经在SimpleAuthenticationInfo中传入了）把用户输入的密码生成散列值与数据库的密码作比较，如果相同，则通过校验，否则抛出异常。
+        return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
     }
 
 
