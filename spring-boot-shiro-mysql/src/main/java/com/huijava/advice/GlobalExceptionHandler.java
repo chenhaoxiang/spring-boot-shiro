@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 全局异常的处理
- *
+ * 通过@ExceptionHandler方法捕获特定异常。
+ * 默认情况下@ControllerAdvice监控所有的@RequestMapping方法，也可以指定监听过滤的条件。
  * @author chenhx
  * @version ShiroExceptionHandler.java, v 0.1 2018-08-20 上午 11:35
  */
