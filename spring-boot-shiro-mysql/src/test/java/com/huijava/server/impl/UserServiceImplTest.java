@@ -37,9 +37,9 @@ public class UserServiceImplTest {
     @Test
     public void userRegister() {
         TUser user = new TUser();
-        user.setUsername("chen");
+        user.setUsername("user2");
         user.setPassword("1234");
-        user.setRoleId(1);
+        user.setRoleId(2);
         System.out.println("===============" + userService.userRegister(user));
     }
 }

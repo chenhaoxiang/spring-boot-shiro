@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,12 +45,12 @@ public class IndexController {
 
     /**
      * IncorrectCredentialsException 密码错误的异常
+     * shiro自带的登录成功跳转没用，这里重定向到首页
      * @param user
      * @param request
      */
     @PostMapping("/toLogin")
-    @ResponseBody
-    public void toLogin(TUser user, HttpServletRequest request) {
+    public RedirectView toLogin(TUser user, HttpServletRequest request) {
         System.out.println("登录...");
         //有加密的话，在这里将密码进行加密再传入
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
@@ -58,6 +59,7 @@ public class IndexController {
         //subject.login(usernamepasswordToken)会自动调用doGetAuthenticationInfo()方法
         currentUser.login(token);
         request.getSession().setAttribute("username", user.getUsername());
+        return new RedirectView("index");
     }
 
     @GetMapping("/login")
