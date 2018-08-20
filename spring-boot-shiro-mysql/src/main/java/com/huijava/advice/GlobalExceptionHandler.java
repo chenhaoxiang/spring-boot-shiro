@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     /**
-     * 未经过授权的例外情况
+     * UnknownAccountException未经过授权的例外情况异常（在未经登录，访问需要授权的链接）
      *
      * @param request
      * @param ex
