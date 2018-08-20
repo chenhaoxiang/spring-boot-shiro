@@ -83,6 +83,13 @@
             <version>1.4.0</version>
         </dependency>
 
+        <!--shiro有jsp标签，在使用freemarker标签只借助第三方的梯子shiro-freemarker-tags-->
+        <dependency>
+            <groupId>net.mingsoft</groupId>
+            <artifactId>shiro-freemarker-tags</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

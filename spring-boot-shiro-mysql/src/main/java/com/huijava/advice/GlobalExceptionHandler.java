@@ -4,6 +4,7 @@
  */
 package com.huijava.advice;
 
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,14 +23,26 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
     /**
      * UnknownAccountException未经过授权的例外情况异常（在未经登录，访问需要授权的链接）
+     * @param request
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler({UnknownAccountException.class})
+    public ModelAndView handleUnknownAccountException(HttpServletRequest request, Exception ex) {
+        System.out.println("未经过授权的例外情况----handleUnknownAccountException");
+        return new ModelAndView("root/login");
+    }
+
+    /**
+     * IncorrectCredentialsException 密码错误
      *
      * @param request
      * @param ex
      * @return
      */
-    @ExceptionHandler(UnknownAccountException.class)
-    public ModelAndView handleUnknownAccountException(HttpServletRequest request, Exception ex) {
-        System.out.println("未经过授权的例外情况----handleUnknownAccountException");
-        return new ModelAndView("403");
+    @ExceptionHandler({IncorrectCredentialsException.class})
+    public ModelAndView handleIncorrectCredentialsException(HttpServletRequest request, Exception ex) {
+        System.out.println("密码错误----handleIncorrectCredentialsException");
+        return new ModelAndView("root/login");
     }
 }

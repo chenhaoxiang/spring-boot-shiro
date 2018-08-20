@@ -35,7 +35,8 @@ public class CustomRealm extends AuthorizingRealm {
     /**
      * 授权
      * SimpleAuthorizationInfo进行角色的添加和权限的添加。
-     * 每次请求都会执行，可以使用redis对shiro的用户信息进行缓存，不用每次都去执行
+     * 登录以后（通过认证），每次请求（访问需要校验的链接）都会执行，可以使用redis对shiro的用户信息进行缓存，不用每次都去执行。
+     * 可以在此方法中通过PrincipalCollection踢出登录的用户
      * @param principalCollection
      * @return
      */
@@ -45,12 +46,15 @@ public class CustomRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         String role = this.userService.selectRoleNameByUserName(username);
         authorizationInfo.addRole(role);
+        //可以缓存用户的权限
         List<String> permissions = this.userService.selectPermissionsByRoleName(role);
+
         authorizationInfo.addStringPermissions(permissions);
         return authorizationInfo;
     }
 
     /**
+     * 未登录以前，访问需要权限的URL，每次请求都会进入该方法
      * 认证
      * @param authenticationToken
      * @return
