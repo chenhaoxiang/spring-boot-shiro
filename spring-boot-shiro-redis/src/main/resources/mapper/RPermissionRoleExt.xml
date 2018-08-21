@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huijava.redis.dao.RPermissionRoleExt">
+    <select id="selectNameByRoleName" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT DISTINCT
+    tp.`name`
+    FROM
+    t_permission AS tp
+    LEFT JOIN t_r_permission_role AS trpr ON tp.id = trpr.permission_id
+    LEFT JOIN t_role AS tr ON trpr.role_id = tr.id
+    WHERE
+    tr.`name` = #{roleName,jdbcType=INTEGER}
+  </select>
+
+</mapper>
