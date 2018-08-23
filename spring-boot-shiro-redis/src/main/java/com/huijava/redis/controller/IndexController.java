@@ -8,6 +8,8 @@ import com.huijava.redis.entity.TUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @author chenhx
  * @version IndexController.java, v 0.1 2018-08-07 上午 11:32
@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class IndexController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
+    
     @GetMapping("/test")
     @ResponseBody
     public String test() {
@@ -35,7 +37,7 @@ public class IndexController {
     @GetMapping({"/index", ""})
     public ModelAndView index(Model model) {
         TUser user = (TUser) SecurityUtils.getSubject().getPrincipal();
-        System.out.println("index---user={}" + user);
+        System.out.println("index---user=" + user);
         model.addAttribute("user", user);
         return new ModelAndView("root/index");
     }
@@ -51,14 +53,13 @@ public class IndexController {
      * shiro自带的登录成功跳转没用，这里重定向到首页
      *
      * @param user
-     * @param request
      */
     @PostMapping("/toLogin")
-    public RedirectView toLogin(TUser user, HttpServletRequest request) {
-        System.out.println("登录...");
+    public RedirectView toLogin(TUser user, boolean rememberMe) {
+        LOGGER.info("登录...user={},rememberMe={}", user, rememberMe);
         //有加密的话，在这里将密码进行加密再传入
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
-        token.setRememberMe(true);
+        token.setRememberMe(rememberMe);
         Subject currentUser = SecurityUtils.getSubject();
         //subject.login(usernamepasswordToken)会自动调用doGetAuthenticationInfo()方法
         currentUser.login(token);

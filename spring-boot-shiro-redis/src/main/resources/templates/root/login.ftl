@@ -9,6 +9,7 @@
 <form action="/toLogin" method="post">
     <input id="username" name="username" type="text" placeholder="用户名"/>
     <input id="password" name="password" type="text" placeholder="密码"/>
+    <input type="checkbox" name="rememberMe"/>记住我
     <button type="submit">登录</button>
 </form>
 </body>

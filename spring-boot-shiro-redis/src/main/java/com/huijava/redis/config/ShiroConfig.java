@@ -8,15 +8,20 @@ import com.huijava.redis.entity.TPermission;
 import com.huijava.redis.server.UserService;
 import com.huijava.redis.shiro.CustomRealm;
 import com.huijava.redis.utils.PasswordUtils;
+import com.huijava.redis.utils.StringUtils;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +35,53 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        String key = StringUtils.getAESKey(128);
+        System.out.println(key);
+        System.out.println(Base64.encodeToString(key.getBytes()));
+    }
+
+    /**
+     * cookie对象;
+     * rememberMeCookie()方法是设置Cookie的生成模版，比如cookie的name，cookie的有效时间等等。
+     * 在shiro配置类中注入rememberMe管理器
+     *
+     * @return
+     */
+    @Bean
+    public SimpleCookie rememberMeCookie() {
+        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
+        simpleCookie.setMaxAge(60 * 60 * 24 * 30);
+        return simpleCookie;
+    }
+
+    /**
+     * cookie管理对象;
+     * rememberMeManager()方法是生成rememberMe管理器，而且要将这个rememberMe管理器设置到securityManager中
+     *
+     * @return
+     */
+    @Bean
+    public CookieRememberMeManager rememberMeManager(SimpleCookie simpleCookie) {
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(simpleCookie);
+        //cookie加密的密钥 默认AES算法 密钥长度(128 256 512 位)。96ea97800d7c194b0b370541d8bf06cf
+        cookieRememberMeManager.setCipherKey(Base64.decode("OTZlYTk3ODAwZDdjMTk0YjBiMzcwNTQxZDhiZjA2Y2Y="));
+        return cookieRememberMeManager;
+    }
+
+
+    /**
+     * 配置redis管理器
+     *
+     * @return
+     */
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         return redisManager;
     }
-
     /**
      * 配置redis缓存管理器
      *
@@ -48,7 +95,6 @@ public class ShiroConfig {
 
     /**
      * 这里需要设置成与PasswordEncrypter类相同的加密规则
-     * <p>
      * 在doGetAuthenticationInfo认证登陆返回SimpleAuthenticationInfo时会使用hashedCredentialsMatcher
      * 把用户填入密码加密后生成散列码与数据库对应的散列码进行对比
      * <p>
@@ -92,12 +138,14 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    public DefaultWebSecurityManager defaultWebSecurityManager(CustomRealm customRealm) {
+    public DefaultWebSecurityManager defaultWebSecurityManager(CustomRealm customRealm, CookieRememberMeManager rememberMeManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //设置realm
         securityManager.setRealm(customRealm);
         //设置缓存
         securityManager.setCacheManager(cacheManager());
+        //设置cookie，记住我功能
+        securityManager.setRememberMeManager(rememberMeManager);
         return securityManager;
     }
 
