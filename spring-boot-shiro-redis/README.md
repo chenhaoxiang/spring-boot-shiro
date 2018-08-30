@@ -1,4 +1,4 @@
-# spring-boot-shiro-mysql
+# spring-boot-shiro-redis 
 
 # 开发说明 
 springboot集成shiro，使用mysql数据库，动态从数据库读取权限配置  
