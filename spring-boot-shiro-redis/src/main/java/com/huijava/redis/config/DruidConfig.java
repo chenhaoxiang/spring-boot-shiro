@@ -23,7 +23,7 @@ public class DruidConfig {
 
     /**
      * 注册一个StatViewServlet
-     *
+     * druid数据源状态监控.
      * @return
      */
     @Bean
@@ -32,7 +32,7 @@ public class DruidConfig {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(),
                 "/druid/*");
         // 添加初始化参数：initParams
-        // 白名单
+        // 白名单 value为ip地址，多个ip用逗号隔开
         servletRegistrationBean.addInitParameter("allow", "");
         // IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not
         // permitted to view this page.
@@ -40,14 +40,14 @@ public class DruidConfig {
         // 登录查看信息的账号密码.
         servletRegistrationBean.addInitParameter("loginUsername", "admin");
         servletRegistrationBean.addInitParameter("loginPassword", "1234");
-        // 是否能够重置数据.
+        // 是否能够重置数据. 禁用HTML页面上的“Reset All”功能
         servletRegistrationBean.addInitParameter("resetEnable", "false");
         return servletRegistrationBean;
     }
 
     /**
      * 注册一个：filterRegistrationBean
-     *
+     * druid过滤器
      * @return
      */
     @Bean
