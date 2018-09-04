@@ -12,3 +12,4 @@ public class SpringBootShiroRedisApplication {
         SpringApplication.run(SpringBootShiroRedisApplication.class, args);
     }
 }
+

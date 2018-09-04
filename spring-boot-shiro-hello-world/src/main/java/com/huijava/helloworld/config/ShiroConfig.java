@@ -38,7 +38,7 @@ public class ShiroConfig {
 
 
     /**
-     * 注入 securityManager
+     * 注入 securityManager安全管理器
      * DefaultWebSecurityManager
      * @param customRealm
      * @return
@@ -50,18 +50,30 @@ public class ShiroConfig {
         return securityManager;
     }
 
+    /**
+     * Spring的Bean post处理器，它自动调用实现{@link org.apache.shiro.util.Initializable}的 init（）和{@link org.apache.shiro.util.Destroyable}接口的 destroy（）方法,。
+     * 这个后处理器可以直接在Spring中配置Shiro bean即可。用户不必担心是否必须指定init-method和destroy-method bean属性。
+     * 注意：此后处理器无法确定是否已经调用init（）或 destroy（），因此如果在applicationContext中，也不要手动或通过Spring的bean属性调用init-method 或 destroy-method 这些方法。
+     *
+     * @return
+     */
     @Bean
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 
-    @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
-        System.out.println("ShiroConfiguration.shirFilter()");
-        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        shiroFilterFactoryBean.setSecurityManager(securityManager);
-        return shiroFilterFactoryBean;
-    }
+    /**
+     * 使用注解时
+     * @param securityManager
+     * @return
+     */
+//    @Bean
+//    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
+//        System.out.println("ShiroConfiguration.shirFilter()");
+//        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+//        shiroFilterFactoryBean.setSecurityManager(securityManager);
+//        return shiroFilterFactoryBean;
+//    }
 
 
     /**
@@ -83,6 +95,7 @@ public class ShiroConfig {
 
 
     /**
+     * shiroFilter
      * 不使用注解的拦截器写法
      * 没有权限之后的跳转必须是登录以后才能识别的
      * @param defaultWebSecurityManager

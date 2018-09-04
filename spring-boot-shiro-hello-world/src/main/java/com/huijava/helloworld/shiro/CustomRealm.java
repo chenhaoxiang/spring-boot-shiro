@@ -31,9 +31,8 @@ public class CustomRealm extends AuthorizingRealm {
     private UserDao userDao;
 
     /**
-     * 授权
+     * 授权信息
      * SimpleAuthorizationInfo进行角色的添加和权限的添加。
-     *
      * @param principalCollection
      * @return
      */
@@ -51,7 +50,7 @@ public class CustomRealm extends AuthorizingRealm {
     }
 
     /**
-     * 认证
+     * 进行认证
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
