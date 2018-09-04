@@ -31,7 +31,7 @@ Shrio的基本功能图：
 最主要功能（也称为Shiro的四大基石）：  
 1. Authentication：身份认证/登录，验证用户是不是拥有相应的身份；
 2. Authorization：授权，即权限验证，验证某个已认证的用户是否拥有某个权限；即判断用户是否能做事情，常见的如：验证某个用户是否拥有某个角色。或者细粒度的验证某个用户对某个资源是否具有某个权限；
-3. Session Manager：会话管理，即用户登录后就是一次会话，在没有退出之前，它的所有信息都在会话中；会话可以是普通JavaSE环境的，也可以是如Web环境的；
+3. Session Manager：会话管理，即用户登录后就是一次会话，在没有退出之前，它的所有信息都在会话中；会话可以是普通JavaSE环境的，也可以是Web环境的；
 4. Cryptography：加密，保护数据的安全性，如密码加密存储到数据库，而不是明文存储；
 
 辅助特性：
@@ -79,13 +79,27 @@ Shiro不提供用户和权限，需要开发人员通过Realm自己进行注入�
 
 # 使用Shiro  
 Shiro能做什么官网：http://shiro.apache.org/reference.html  
-未整合Spring以前，是需要在Web.xml中定义org.apache.shiro.web.servlet.ShiroFilter过滤器的  
+未整合Spring/SpringBoot以前，是需要在Web.xml中定义org.apache.shiro.web.servlet.ShiroFilter过滤器的  
 Shiro的初始化工作在web.xml中设置监听器完成
+```
 <listener>   
  <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
  </listener>
+ <filter>
+     <filter-name>ShiroFilter</filter-name>
+     <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+ </filter>
+ <filter-mapping>
+     <filter-name>ShiroFilter</filter-name>
+     <url-pattern>/*</url-pattern>
+ </filter-mapping>
+ ```
  
- 和SpringBoot整合
+和Spring/SpringBoot整合以后，监听器是交由DelegatingFilterProxy代理过滤器进行管理，只需要注入ShiroFilter即可  
+
+
+
+JdbcRealm，不建议使用的  
 
 # 参与贡献
 陈浩翔   
