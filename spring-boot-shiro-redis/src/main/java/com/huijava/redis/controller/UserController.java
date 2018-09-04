@@ -5,6 +5,7 @@
 package com.huijava.redis.controller;
 
 import com.huijava.redis.server.ShiroService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,31 +18,32 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
     @Autowired
     private ShiroService shiroService;
 
     @GetMapping("/insert")
     public String insert() {
-        System.out.println("insert...");
+        log.info("insert...");
         return "insert";
     }
 
     @GetMapping("/update")
     public String update() {
-        System.out.println("update...");
+        log.info("update...");
         return "update";
     }
 
     @GetMapping("/delete")
     public String delete() {
-        System.out.println("delete...");
+        log.info("delete...");
         return "delete";
     }
 
     @GetMapping("/select")
     public String select() {
-        System.out.println("select...");
+        log.info("select...");
         return "select";
     }
 
@@ -53,7 +55,7 @@ public class UserController {
     @GetMapping("/updatePermission")
     @ResponseBody
     public String updatePermission() {
-        System.out.println("select...");
+        log.info("select...");
         shiroService.updatePermission();
         return "updatePermission";
     }

@@ -4,6 +4,7 @@
  */
 package com.huijava.redis.advice;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.core.Ordered;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ControllerAdvice
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
+@Slf4j
 public class GlobalExceptionHandler {
     /**
      * UnknownAccountException未经过授权的例外情况异常（在未经登录，访问需要授权的链接）
@@ -35,7 +37,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({UnknownAccountException.class})
     public ModelAndView handleUnknownAccountException(HttpServletRequest request, Exception ex) {
-        System.out.println("未经过授权的例外情况----handleUnknownAccountException");
+        log.info("未经过授权的例外情况----handleUnknownAccountException={}", ex.getMessage());
         return new ModelAndView("root/login");
     }
 
@@ -48,7 +50,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({IncorrectCredentialsException.class})
     public ModelAndView handleIncorrectCredentialsException(HttpServletRequest request, Exception ex) {
-        System.out.println("密码错误----handleIncorrectCredentialsException");
+        log.info("密码错误----handleIncorrectCredentialsException={}", ex.getMessage());
         return new ModelAndView("root/login");
     }
 }

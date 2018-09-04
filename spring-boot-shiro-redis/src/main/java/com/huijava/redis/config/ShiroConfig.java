@@ -9,6 +9,7 @@ import com.huijava.redis.server.UserService;
 import com.huijava.redis.shiro.CustomRealm;
 import com.huijava.redis.utils.PasswordUtils;
 import com.huijava.redis.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @version ShiroConfig.java, v 0.1 2018-08-03 下午 2:46
  */
 @Configuration
+@Slf4j
 public class ShiroConfig {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
@@ -211,7 +213,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean
                 .setFilterChainDefinitionMap(filterChainDefinitionMap);
 
-        System.out.println("Shiro拦截器工厂类注入成功");
+        log.info("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
     }
 

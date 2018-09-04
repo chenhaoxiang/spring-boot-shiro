@@ -30,21 +30,21 @@ public class IndexController {
     @GetMapping("/test")
     @ResponseBody
     public String test() {
-        System.out.println("test");
+        LOGGER.info("test...");
         return "test";
     }
 
     @GetMapping({"/index", ""})
     public ModelAndView index(Model model) {
         TUser user = (TUser) SecurityUtils.getSubject().getPrincipal();
-        System.out.println("index---user=" + user);
+        LOGGER.info("index---user={}", user);
         model.addAttribute("user", user);
         return new ModelAndView("root/index");
     }
 
     @GetMapping("/403")
     public ModelAndView notAuthorized() {
-        System.out.println("403");
+        LOGGER.info("notAuthorized...");
         return new ModelAndView("error/403");
     }
 
@@ -68,14 +68,14 @@ public class IndexController {
 
     @GetMapping("/login")
     public ModelAndView login() {
-        System.out.println("登录页面...");
+        LOGGER.info("登录页面...");
         return new ModelAndView("root/login");
     }
 
     @GetMapping("/logout")
     @ResponseBody
     public String logout() {
-        System.out.println("登出...");
+        LOGGER.info("登出...");
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
         return "logout success";

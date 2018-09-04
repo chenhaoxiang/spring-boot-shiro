@@ -6,6 +6,7 @@ package com.huijava.redis.shiro;
 
 import com.huijava.redis.entity.TUser;
 import com.huijava.redis.server.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -30,6 +31,7 @@ import java.util.List;
  * @author chenhx
  * @version CustomRealm.java, v 0.1 2018-08-03 下午 2:40
  */
+@Slf4j
 public class CustomRealm extends AuthorizingRealm {
     @Autowired
     private UserService userService;
@@ -67,13 +69,13 @@ public class CustomRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        System.out.println("MyShiroRealm.doGetAuthenticationInfo()");
+        log.info("MyShiroRealm.doGetAuthenticationInfo()");
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String username = token.getUsername();
         //通过username从数据库中查找 User对象
         //实际项目中，这里可以根据实际情况做Redis缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
         TUser user = this.userService.selectUserByUserName(username);
-        System.out.println("====>user=" + user);
+        log.info("====>user={}", user);
         if (user == null) {
             throw new UnknownAccountException("账号密码不对");
         }
