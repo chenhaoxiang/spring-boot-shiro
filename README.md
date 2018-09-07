@@ -78,7 +78,9 @@ Shiro不提供用户和权限，需要开发人员通过Realm自己进行注入�
 10. Realms (org.apache.shiro.realm.Realm):可以有1个或多个Realm，可以认为是安全实体数据源，即用于获取安全实体的；可以是JDBC实现，也可以是LDAP（轻量目录访问协议）实现，或者内存实现等等；由用户提供；注意：Shiro不知道你的用户/权限存储在哪及以何种格式存储；所以我们一般在应用中都需要实现自己的Realm；
 
 # 使用Shiro  
-Shiro能做什么官网：http://shiro.apache.org/reference.html  
+Shiro官网：http://shiro.apache.org/reference.html  
+中文文档：https://github.com/waylau/apache-shiro-1.2.x-reference  
+
 未整合Spring/SpringBoot以前，是需要在Web.xml中定义org.apache.shiro.web.servlet.ShiroFilter过滤器的  
 Shiro的初始化工作在web.xml中设置监听器完成
 ```
@@ -94,12 +96,41 @@ Shiro的初始化工作在web.xml中设置监听器完成
      <url-pattern>/*</url-pattern>
  </filter-mapping>
  ```
+Shiro 的 EnvironmentLoaderListener 就是一个典型的 ServletContextListener，它也是整个 Shiro Web 应用的入口 。  
+
+EventListener 是一个标志接口，里面没有任何的方法，Servlet 容器中所有的 Listener 都要继承这个接口（这是 Servlet 规范）。
+  
+![EnvironmentLoaderListener](http://blogimg.chenhaoxiang.cn/18-9-7/72175933.jpg)    
+```
+ServletContextListener 是一个 ServletContext 的监听器，用于监听容器的启动与关闭事件，包括如下两个方法：  
+ --- void contextInitialized(ServletContextEvent sce); // 当容器启动时调用  
+ --- void contextDestroyed(ServletContextEvent sce); // 当容器关闭时调用  
+ ```
+可以从 ServletContextEvent 中直接获取 ServletContext 对象。  
+
+EnvironmentLoaderListener 不仅实现了 ServletContextListener 接口，也扩展了 EnvironmentLoader 类，应该是需要在 Servlet 容器中调用 EnvironmentLoader 对象的生命周期方法
+ 从 Shiro 1.2 开始引入了 Environment/WebEnvironment 的概念，即由它们的实现提供相应的 SecurityManager 及其相应的依赖。ShiroFilter 会自动找到 Environment 然后获取相应的依赖。
+ 通过 EnvironmentLoaderListener 来创建相应的 WebEnvironment，并自动绑定到 ServletContext，默认使用 IniWebEnvironment 实现。
+
+ EnvironmentLoader的功能：
+1.  当容器启动时，读取 web.xml 文件，从中获取 WebEnvironment 接口的实现类（默认是 IniWebEnvironment），初始化该实例，并将其加载到 ServletContext 中。
+2.  当容器关闭时，销毁 WebEnvironment 实例，并从 ServletContext 将其移除。
+
+ IniWebEnvironment的功能：
+1.  查找并加载 shiro.ini 配置文件，首先从自身成员变量里查找，然后从 web.xml 中查找，然后从 /WEB-INF 下查找，然后从 classpath 下查找，若均未找到，则直接报错。
+2.  当找到了 ini 配置文件后就开始解析，此时构造了一个 Bean 容器（相当于一个轻量级的 IOC 容器），最终的目标是为了创建 WebSecurityManager 对象与 FilterChainResolver 对象，创建过程使用了 Abstract Factory 模式
+
+EnvironmentLoaderListener无非就是在容器启动时创建 WebEnvironment 对象，并由该对象来读取 Shiro 配置文件，创建WebSecurityManager（安全管理器）与 FilterChainResolver（过滤链解析器） 对象，在ShiroFilter中起到了重要作用。  
  
-和Spring/SpringBoot整合以后，监听器是交由DelegatingFilterProxy代理过滤器进行管理，只需要注入ShiroFilter即可  
+ShiroFilter 是整个 Shiro 的入口点，用于拦截需要安全控制的请求进行处理。  
+因为它拦截了所有的请求，后面的 Authentication（认证）和Authorization（授权）都由ShiroFilter说了算  
 
+和Spring/SpringBoot整合以后，我们只需要注入ShiroFilter即可，ShiroFilter由ShiroFilterFactoryBean负责创建。所以注入ShiroFilterFactoryBean,由 ShiroFilterFactoryBean创建  ShiroFilter即可  
 
-
-JdbcRealm，不建议使用的  
+# 参考文章  
+[Introduction to Apache Shiro](http://shiro.apache.org/introduction.html)  
+[Shiro 之 入口：EnvironmentLoaderListener](https://my.oschina.net/huangyong/blog/209339)    
+[第一章 Shiro简介——《跟我学Shiro》](http://jinnianshilongnian.iteye.com/blog/2018936)   
 
 # 参与贡献
 陈浩翔   

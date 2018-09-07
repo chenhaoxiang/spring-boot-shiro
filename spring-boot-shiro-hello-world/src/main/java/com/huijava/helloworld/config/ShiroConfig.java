@@ -98,6 +98,12 @@ public class ShiroConfig {
      * shiroFilter
      * 不使用注解的拦截器写法
      * 没有权限之后的跳转必须是登录以后才能识别的
+     *     这些名为anon,authc,roles,perms等的过滤器，实际上是一些{@link javax.servlet.Filter}接口的实现，它们都位于org.apache.shiro.web.filter包中。
+     * 通过{@link org.apache.shiro.web.filter.mgt.DefaultFilter} 知道了那些拦截器的命名
+     *         anon对应{@link org.apache.shiro.web.filter.authc.AnonymousFilter}
+     *         authc对应{@link org.apache.shiro.web.filter.authc.FormAuthenticationFilter}
+     *         roles对应{@link org.apache.shiro.web.filter.authz.RolesAuthorizationFilter}
+     *         perms对应{@link org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter}
      * @param defaultWebSecurityManager
      * @return
      */
