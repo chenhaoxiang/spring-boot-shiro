@@ -20,6 +20,11 @@ generator自定义注释输出表注释和字段注释
 druid 监控配置配置  
 配置了记住我的功能，其实就是存储到客户端的Cookie    
 
+## spring-boot-custom-permission
+自定义的一个权限拦截器    
+基于Spring的进行实现  
+
+
 # Shiro介绍  
 
 Shiro是什么  
