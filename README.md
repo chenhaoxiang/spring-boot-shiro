@@ -126,11 +126,14 @@ ShiroFilter 是整个 Shiro 的入口点，用于拦截需要安全控制的请�
 因为它拦截了所有的请求，后面的 Authentication（认证）和Authorization（授权）都由ShiroFilter说了算  
 
 和Spring/SpringBoot整合以后，我们只需要注入ShiroFilter即可，ShiroFilter由ShiroFilterFactoryBean负责创建。所以注入ShiroFilterFactoryBean,由 ShiroFilterFactoryBean创建  ShiroFilter即可  
+ 
+
 
 # 参考文章  
 [Introduction to Apache Shiro](http://shiro.apache.org/introduction.html)  
 [Shiro 之 入口：EnvironmentLoaderListener](https://my.oschina.net/huangyong/blog/209339)    
 [第一章 Shiro简介——《跟我学Shiro》](http://jinnianshilongnian.iteye.com/blog/2018936)   
+
 
 # 参与贡献
 陈浩翔   
