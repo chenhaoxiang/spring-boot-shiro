@@ -132,6 +132,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/update", "perms[user:update]");
         filterChainDefinitionMap.put("/delete", "perms[user:delete]");
         filterChainDefinitionMap.put("/select", "perms[user:select]");
+
         //其余接口一律拦截
         //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截
 //        过滤链定义，从上向下顺序执行，一般将/**放在最为下边

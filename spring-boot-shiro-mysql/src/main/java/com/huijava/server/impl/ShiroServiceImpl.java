@@ -89,7 +89,7 @@ public class ShiroServiceImpl implements ShiroService {
             DefaultFilterChainManager manager = (DefaultFilterChainManager) filterChainResolver
                     .getFilterChainManager();
 
-            // 清空权限过滤链链
+            // 清空权限过滤链
             manager.getFilterChains().clear();
             //清空权限map
             shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();

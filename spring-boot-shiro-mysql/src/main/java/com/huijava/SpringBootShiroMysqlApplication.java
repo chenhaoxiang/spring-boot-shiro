@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan("com.huijava.dao")
 public class SpringBootShiroMysqlApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(SpringBootShiroMysqlApplication.class, args);
     }
+
 }

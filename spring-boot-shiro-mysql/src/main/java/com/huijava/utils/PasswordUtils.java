@@ -25,7 +25,7 @@ public class PasswordUtils {
     /**
      * 散列次数
      */
-    private static int HASH_ITERATIONS = 5;
+    private static int HASH_ITERATIONS = 1024;
 
     public static <T extends TUser> void encryptPassword(T t) {
         // 随机生成盐

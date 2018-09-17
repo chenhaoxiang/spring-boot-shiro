@@ -19,8 +19,8 @@
     <@shiro.hasPermission name="user:delete">
         <li>user:delete</li>
     </@shiro.hasPermission>
-    <@shiro.hasPermission name="user:select">
-        <li>user:select</li>
+    <@shiro.hasPermission name="user:insert">
+        <li>user:insert</li>
     </@shiro.hasPermission>
     <@shiro.hasPermission name="test">
         <li>test</li>

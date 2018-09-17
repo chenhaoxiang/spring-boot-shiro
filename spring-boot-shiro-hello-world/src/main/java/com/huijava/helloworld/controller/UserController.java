@@ -52,7 +52,6 @@ public class UserController {
         currentUser.logout();
     }
 
-
     @GetMapping("/insert")
 //    @RequiresPermissions("user:insert")
     public Integer insert() {
